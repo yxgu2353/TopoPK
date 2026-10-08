@@ -1,56 +1,36 @@
-# TopoPK — Topological Pharmacokinetics Toolkit
+# TopoPK — Real-Data Demo
 
-A Python toolkit for analyzing pharmacokinetic (PK) time-concentration curves using topological data analysis (TDA).
+This repository contains the demo code accompanying the paper on **Topological Pharmacokinetics (TopoPK)**. It runs the full TopoPK pipeline on a real clinical PK dataset (15 MPA plasma concentration–time profiles): starting from sparsely sampled curves, it extracts topological and nonlinear-dynamics features and reproduces the signature figures used in the paper.
 
-## Overview
+---
 
-TopoPK extracts shape-based topological features from PK curves to characterize drug absorption, distribution, and elimination patterns. It combines persistent homology, phase space reconstruction, and curvature analysis to provide a quantitative signature of PK profiles.
+## Pipeline
 
-## Features
+1. **Preprocessing** — reads the `ID / Time / Conc` columns, anchors the time endpoints, and densifies each sparse profile to 400 points with LULD interpolation (linear on ascending segments, log-linear on descending ones).
+2. **TopoPK feature extraction** — computes H0 persistence features (main/secondary peak birth, death, persistence, Δ*t*), permutation entropy, Betti-1, and nonlinear coupling indices.
+3. **Late-peak characterization** — detects the second peak after the primary one and reports peak/valley positions, persistence, inter-peak time, valley-to-peak ratios, and the EHC (enterohepatic circulation) proxy AUC fraction derived from a log-linear counterfactual extrapolation.
+4. **Visualization** — produces one figure per three profiles, laid out as concentration curve / normalized H0 diagram / delay-embedding phase plot, labeled Weak / Intermediate / Strong by late-peak persistence tertile.
 
-| Feature | Description |
-|---------|-------------|
-| **H0 Persistence** | Peak detection and persistence (prominence) of concentration peaks |
-| **Entropy (PE)** | Shannon entropy of peak prominence distribution |
-| **Integral (PI)** | Normalized sum of peak prominences |
-| **Pers Ratio** | Persistence ratio between primary and secondary peaks |
-| **Delta_t** | Time interval between major peaks |
-| **Decouple** | Valley depth between absorption and elimination phases |
-| **Dev** | Phase space deviation from linear elimination trajectory |
-| **N_PTP** | Number of peak turning points in phase space curvature |
-| **Beta_1** | H1 persistent homology — number of loop structures in phase space |
-| **Lambda_NL** | Normalized maximum persistence in H1, reflecting nonlinearity |
+---
 
-## Dependencies
+## Requirements
 
-- `numpy`, `pandas`, `matplotlib`
-- `scipy`
-- `ripser` (optional, for Beta_1 and Lambda_NL)
-
-## Quick Start
-
-```python
-import numpy as np
-from TopoPK_toolkit import TopoPKAnalyzer, luld_interpolate, plot_topopk_dashboard
-
-# Sparse PK samples
-t = np.array([0, 0.5, 1, 2, 4, 8, 12, 24, 36, 48])
-C = 800 * np.exp(-1.5 * t) + 200 * np.exp(-0.05 * t)
-
-# Interpolate with LULD method
-t_dense, C_dense = luld_interpolate(t, C, num_points=400)
-
-# Extract topological features
-analyzer = TopoPKAnalyzer(t_dense, C_dense, tau=5)
-features = analyzer.extract_all()
-
-# Visualize
-plot_topopk_dashboard(t_dense, C_dense, features=features, tau=5)
+```bash
+pip install numpy pandas scipy matplotlib openpyxl
 ```
 
-## Output
+---
 
-The dashboard visualization includes three panels:
-1. **PK curve** with detected peaks and turning points
-2. **Persistence diagram** (H0 birth-death plot)
-3. **Phase space** (C(t) vs C(t+τ)) with deviation and curvature markers
+## Usage
+
+```bash
+python analyze_realdata.py
+```
+
+---
+
+## Citation
+
+If you use this code in your research, please cite:
+
+> *Topological Pharmacokinetics: A Perspective on Shape-Based and Network-Aware Drug Profiling*
