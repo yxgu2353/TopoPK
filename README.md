@@ -16,7 +16,7 @@ This repository contains the demo code accompanying the paper on **Topological P
 ## Requirements
 
 ```bash
-pip install numpy pandas scipy matplotlib openpyxl
+pip install numpy pandas scipy matplotlib openpyxl ripser
 ```
 
 ---
