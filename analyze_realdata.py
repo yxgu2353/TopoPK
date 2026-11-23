@@ -18,7 +18,7 @@ OUT = CASE_DIR / "outputs_simplified"
 OUT.mkdir(parents=True, exist_ok=True)
 
 sys.path.insert(0, str(BASE))
-from TopoPK_toolkit_update import TopoPKAnalyzer, luld_interpolate  # noqa: E402
+from TopoPK_core import TopoPKAnalyzer, luld_interpolate  # noqa: E402
 
 
 matplotlib.rcParams.update(
@@ -319,7 +319,7 @@ def plot_all_signature_groups(features: pd.DataFrame, details: dict[int, dict]) 
 
 
 def main() -> None:
-    source = BASE / "260902_raw_data.xlsx"
+    source = BASE / "Raw analysis data.xlsx"
     raw = pd.read_excel(source, sheet_name="Sheet1")
     raw.columns = [str(c).strip() for c in raw.columns]
     required = {"ID", "Time", "Conc"}
