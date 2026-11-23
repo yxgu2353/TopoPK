@@ -33,4 +33,4 @@ python analyze_realdata.py
 
 If you use this code in your research, please cite:
 
-> *Topological Pharmacokinetics: A Perspective on Shape-Based and Network-Aware Drug Profiling*
+> *Topological Pharmacokinetics: A Model-Free Framework for Quantifying the Shape of Concentration–Time Curves*
